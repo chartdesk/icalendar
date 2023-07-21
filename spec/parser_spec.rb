@@ -107,4 +107,13 @@ describe Icalendar::Parser do
       expect(event.dtstart).to be_kind_of Icalendar::Values::Date
     end
   end
+
+  describe 'special date value parameter' do
+    let(:fn) { 'special_date_event.ics' }
+
+    it 'falls back to date type for dtstart' do
+      event = subject.parse.first.events.first
+      expect(event.dtstart).to be_kind_of Icalendar::Values::DateTime
+    end
+  end
 end

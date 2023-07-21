@@ -16,6 +16,13 @@ module Icalendar
           begin
             parsed_date = ::DateTime.strptime(value, FORMAT)
           rescue ArgumentError => e
+            retry_count ||= 0
+            if value.include?('-') && retry_count <= 3
+              value.delete!('-')
+              retry_count += 1
+              retry
+            end
+
             raise FormatError.new("Failed to parse \"#{value}\" - #{e.message}")
           end
 
